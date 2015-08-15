@@ -24,8 +24,13 @@ public class UtilitiesTest {
 	
 	@Before
 	public void config() {
-		Util.setLoggingLevel(Level.TRACE);
+		Util.setLoggingLevel(Level.DEBUG);
 		ClocService.init();
+	}
+	
+	@Test
+	public void clocTest() {
+		assertTrue(ClocService.canGetCLOCStats());
 	}
 
 	@Test

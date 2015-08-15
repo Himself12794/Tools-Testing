@@ -260,6 +260,7 @@ public final class ClocService {
 			try {
 				final String response = CommandLineUtils.executeCommand(command);
 				LOGGER.debug("Response: {}", response);
+				LOGGER.debug("INstallation succeded with command {}", command);
 				status = true;
 				break;
 			} catch (IOException e) {
