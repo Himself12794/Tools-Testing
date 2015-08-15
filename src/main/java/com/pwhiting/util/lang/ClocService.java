@@ -1,4 +1,4 @@
-package com.pwhiting.util;
+package com.pwhiting.util.lang;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,12 +15,12 @@ import org.yaml.snakeyaml.Yaml;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.google.common.collect.Maps;
-import com.pwhiting.util.ClocData.Header;
-import com.pwhiting.util.ClocData.LangStats;
 import com.pwhiting.util.CommandLineUtils;
 import com.pwhiting.util.OSType;
 import com.pwhiting.util.Util;
-import com.pwhiting.util.CodeSniffer.Language;
+import com.pwhiting.util.lang.ClocData.Header;
+import com.pwhiting.util.lang.ClocData.LangStats;
+import com.pwhiting.util.lang.CodeSniffer.Language;
 
 /**
  * Utility class for CLOC use.

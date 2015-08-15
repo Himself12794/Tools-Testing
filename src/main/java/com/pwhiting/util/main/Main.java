@@ -1,4 +1,4 @@
-package com.pwhiting.main;
+package com.pwhiting.util.main;
 
 import java.util.Arrays;
 
