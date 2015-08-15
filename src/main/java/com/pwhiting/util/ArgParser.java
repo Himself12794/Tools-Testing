@@ -231,6 +231,14 @@ public final class ArgParser {
 	public String getString(final String key, final String defaultV) {
 		return Util.ifNullDefault(getString(key), defaultV);
 	}
+	
+	public <T> T parseArgs(ArgMapper<T> mapper) {
+		return mapper.mapArguments(this);
+	}
+	
+	public static <T> T parseArgs(ArgMapper<T> mapper, String...args) {
+		return mapper.mapArguments(ArgParser.parse(args));
+	}
 
 	private static boolean isFlag(final String value) {
 		return value.length() == 2 && value.lastIndexOf('-') == 0;
