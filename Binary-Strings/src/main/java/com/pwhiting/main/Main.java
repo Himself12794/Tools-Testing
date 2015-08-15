@@ -16,8 +16,8 @@ public class Main {
 
 		byte[] charByte = character.getBytes();
 
-		for (Byte[] byteArray : Util.byteArraySplit(blurbToBinary, charByte)) {
-			System.out.println(Arrays.toString(Util.arrayConversion(byteArray)));
+		for (byte[] byteArray : Util.byteArraySplit(blurbToBinary, charByte)) {
+			System.out.println(Arrays.toString(byteArray));
 		}
 	}
 
