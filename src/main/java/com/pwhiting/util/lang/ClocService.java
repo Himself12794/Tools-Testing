@@ -33,14 +33,12 @@ public final class ClocService {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ClocService.class.getSimpleName());
 
-	private static final String[] ARGS = { "", "--quiet", "--progress-rate=0",
+	private static final String[] CLOC_EXECUTION_ARGS = { "", "--quiet", "--progress-rate=0",
 			"--yaml", "--skip-win-hidden", "" };
 
 	private static boolean init = false;
 
 	private static boolean clocInstalled = false;
-
-	private static boolean perlInstalled = false;
 
 	private static final String CLOC_DIR = "cloc/";
 
@@ -70,21 +68,18 @@ public final class ClocService {
 
 	public static String getCLOCDataAsYaml(final File file) throws IOException {
 
-		if (!canGetCLOCStats()) {
-			throw new IOException("Cannot run cloc");
+		if (!init) {
+			throw new IOException("CLOC has not been initialized");
 		}
 
-		ARGS[ARGS.length - 1] = file.getAbsolutePath();
+		CLOC_EXECUTION_ARGS[CLOC_EXECUTION_ARGS.length - 1] = file.getAbsolutePath();
 
 		if (clocInstalled) {
 			LOGGER.debug("Running CLOC on directory {}", file);
-			return CommandLineUtils.executeCommand("cloc", ARGS);
-		} else if (perlInstalled) {
-			ARGS[0] = CLOC_PL;
-			return CommandLineUtils.executeCommand("perl", ARGS);
+			return CommandLineUtils.executeCommand("cloc", CLOC_EXECUTION_ARGS);
 		} else {
 			return CommandLineUtils.executeCommand(getFileForOS(false)
-					.getPath(), ARGS);
+					.getPath(), CLOC_EXECUTION_ARGS);
 		}
 
 	}
@@ -150,7 +145,7 @@ public final class ClocService {
 					"\n", " ");
 		} catch (IOException e) {
 			LOGGER.trace("Cloc not initialized", e);
-			return "0.0";
+			return "1.60";
 		}
 	}
 
@@ -192,46 +187,17 @@ public final class ClocService {
 			clocInstalled = true;
 			init = true;
 
-		} else if (isPerlInstalled()) {
-
-			perlInstalled = true;
-			init = true;
-
 		} else {
-
-			if (OSType.getOSType().isWindows()) {
-
-				try {
-
-					final File file = getFileForOS(false);
-					if (!file.exists()) {
-
-						LOGGER.debug("Making directory "
-								+ BIN_DIR.getAbsolutePath());
-						FileUtils.forceMkdir(BIN_DIR);
-
-						LOGGER.debug("Extracting "
-								+ getFileForOS(true).getName() + " to "
-								+ getFileForOS(false).getAbsolutePath());
-
-						final InputStream link = Util.class
-								.getResourceAsStream("/" + CLOC_DIR
-										+ getFileForOS(true).getName());
-						Files.copy(link, file.getAbsoluteFile().toPath());
-					}
-
-					init = true;
-
-				} catch (final IOException e) {
-					LOGGER.warn("CLOC initialization failed");
-					LOGGER.trace("", e);
-					LOGGER.info("You must enable execute permissions for this program, or manually install CLOC for its integration to work.");
-					init = false;
-				}
-			} else if (OSType.getOSType().isUnix()) {
+			
+			OSType type = OSType.getOSType();
+			
+			if (type.isWindows()) {
+				init = installGeneric();
+			} else if (type.isUnix()) {
 				init = installUnix();
+				if (!init) { init = installGeneric(); }
 			} else {
-				init = false;
+				init = installGeneric();
 			}
 		}
 
@@ -260,12 +226,46 @@ public final class ClocService {
 			try {
 				final String response = CommandLineUtils.executeCommand(command);
 				LOGGER.debug("Response: {}", response);
-				LOGGER.debug("INstallation succeded with command {}", command);
+				LOGGER.debug("Installation succeded with command {}", command);
 				status = true;
 				break;
 			} catch (IOException e) {
 				LOGGER.trace("Command \"" + command + "\" unsuccessful.", e);
 			}
+		}
+		
+		return status;
+		
+	}
+	
+	private static boolean installGeneric() {
+		
+		boolean status = false;
+		
+		try {
+
+			final File file = getFileForOS(false);
+			if (!file.exists()) {
+
+				LOGGER.debug("Making directory "
+						+ BIN_DIR.getAbsolutePath());
+				FileUtils.forceMkdir(BIN_DIR);
+
+				LOGGER.debug("Extracting "
+						+ getFileForOS(true).getName() + " to "
+						+ getFileForOS(false).getAbsolutePath());
+
+				final InputStream link = Util.class
+						.getResourceAsStream("/" + CLOC_DIR
+								+ getFileForOS(true).getName());
+				Files.copy(link, file.getAbsoluteFile().toPath());
+			}
+			status = true;
+
+		} catch (final IOException e) {
+			LOGGER.warn("CLOC initialization failed");
+			LOGGER.trace("", e);
+			LOGGER.info("You must enable execute permissions for this program, or manually install CLOC for its integration to work.");
 		}
 		
 		return status;
