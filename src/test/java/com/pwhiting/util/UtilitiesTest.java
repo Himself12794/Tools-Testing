@@ -2,7 +2,9 @@ package com.pwhiting.util;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.pwhiting.util.lang.ClocData;
 import com.pwhiting.util.lang.ClocData.Header;
@@ -54,6 +57,114 @@ public class UtilitiesTest {
 
 		LOGGER.debug(data.toString());
 
+	}
+	
+	@Test
+	public void randomWeightedSelectionTest() {
+		IWeightedItem w1 = new IWeightedItem() {
+
+			@Override
+			public float getWeight() {
+				return 1.0F;
+			}
+
+			@Override
+			public String getName() {
+				return "w1";
+			}
+
+		};
+
+		IWeightedItem w2 = new IWeightedItem() {
+
+			@Override
+			public float getWeight() {
+				return 5.0F;
+			}
+
+			@Override
+			public String getName() {
+				return "w2";
+			}
+
+		};
+
+		IWeightedItem w3 = new IWeightedItem() {
+
+			@Override
+			public float getWeight() {
+				return 3.0F;
+			}
+
+			@Override
+			public String getName() {
+				return "w3";
+			}
+
+		};
+
+		IWeightedItem w4 = new IWeightedItem() {
+
+			@Override
+			public float getWeight() {
+				return 0.001F;
+			}
+
+			@Override
+			public String getName() {
+				return "w4";
+			}
+
+		};
+
+		IWeightedItem w5 = new IWeightedItem() {
+
+			@Override
+			public float getWeight() {
+				return 10.0F;
+			}
+
+			@Override
+			public String getName() {
+				return "w5";
+			}
+
+		};
+
+		List<IWeightedItem> items = Lists.newArrayList(w1, w2, w3, w4, w5);
+		Map<IWeightedItem, Integer> choices = Maps.newHashMap();
+
+		for (int i = 0; i < 50000; i++) {
+
+			IWeightedItem selection = RandomUtils.selectRandomWeightedItem(items);
+
+			if (!choices.containsKey(selection)) {
+				choices.put(selection, 1);
+			} else {
+				choices.put(selection, choices.get(selection) + 1);
+			}
+
+		}
+
+		System.out.println("Our choices are: ");
+
+		for (Entry<IWeightedItem, Integer> entry : choices.entrySet()) {
+
+			System.out.println(entry.getKey().getName() + " was chosen "
+					+ entry.getValue() + " times, with a weight of "
+					+ entry.getKey().getWeight());
+
+		}
+		
+		IWeightedItem item = null;
+		int iterations = 0;
+		
+		while (item != w4) {
+			item = RandomUtils.selectRandomWeightedItem(items);
+			iterations++;
+		}
+		
+		System.out.println("Took " + iterations + " iterations for " + item.getName() + " to be chosen");
 	}
 
 }
