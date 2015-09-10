@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -69,7 +70,7 @@ public class UtilitiesTest {
 			}
 
 			@Override
-			public String getName() {
+			public String toString() {
 				return "w1";
 			}
 
@@ -83,7 +84,7 @@ public class UtilitiesTest {
 			}
 
 			@Override
-			public String getName() {
+			public String toString() {
 				return "w2";
 			}
 
@@ -97,7 +98,7 @@ public class UtilitiesTest {
 			}
 
 			@Override
-			public String getName() {
+			public String toString() {
 				return "w3";
 			}
 
@@ -109,9 +110,9 @@ public class UtilitiesTest {
 			public float getWeight() {
 				return 0.001F;
 			}
-
+			
 			@Override
-			public String getName() {
+			public String toString() {
 				return "w4";
 			}
 
@@ -125,7 +126,7 @@ public class UtilitiesTest {
 			}
 
 			@Override
-			public String getName() {
+			public String toString() {
 				return "w5";
 			}
 
@@ -133,10 +134,13 @@ public class UtilitiesTest {
 
 		List<IWeightedItem> items = Lists.newArrayList(w1, w2, w3, w4, w5);
 		Map<IWeightedItem, Integer> choices = Maps.newHashMap();
+		int iters = 50000;
 
-		for (int i = 0; i < 50000; i++) {
+		Random rand = new Random(0L);
+		
+		for (int i = 0; i < iters; i++) {
 
-			IWeightedItem selection = RandomUtils.selectRandomWeightedItem(items);
+			IWeightedItem selection = RandomUtils.selectRandomWeightedItem(items, rand);
 
 			if (!choices.containsKey(selection)) {
 				choices.put(selection, 1);
@@ -146,11 +150,11 @@ public class UtilitiesTest {
 
 		}
 
-		System.out.println("Our choices are: ");
+		System.out.println("Out of " + iters + " iterations, Our choices are: ");
 
 		for (Entry<IWeightedItem, Integer> entry : choices.entrySet()) {
 
-			System.out.println(entry.getKey().getName() + " was chosen "
+			System.out.println(entry.getKey() + " was chosen "
 					+ entry.getValue() + " times, with a weight of "
 					+ entry.getKey().getWeight());
 
@@ -164,7 +168,7 @@ public class UtilitiesTest {
 			iterations++;
 		}
 		
-		System.out.println("Took " + iterations + " iterations for " + item.getName() + " to be chosen");
+		System.out.println("Took " + iterations + " iterations for " + item + " to be chosen");
 	}
 
 }

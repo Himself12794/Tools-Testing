@@ -1,12 +1,10 @@
 package com.pwhiting.util;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 
@@ -14,17 +12,11 @@ public final class RandomUtils {
 
 	private RandomUtils() {
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T extends IWeightedItem> T selectRandomWeightedItem(Collection<T> items, Random rand) {
 
-	/**
-	 * Selects a random weighted item out of the collection. Returns null is
-	 * collection is empty, or all items have a weight of null.
-	 * 
-	 * @param items
-	 * @return
-	 */
-	public static IWeightedItem selectRandomWeightedItem(Collection<IWeightedItem> items) {
-
-		Random rand = new Random();
+		if (rand == null) rand = new Random();
 
 		float totalWeight = 0.0F;
 		Map<Range, IWeightedItem> ranges = Maps.newHashMap();
@@ -44,15 +36,24 @@ public final class RandomUtils {
 
 		for (Entry<Range, IWeightedItem> entry : ranges.entrySet()) {
 
-			System.out.println(entry.getKey());
 			if (entry.getKey().contains(choice)) {
-				return entry.getValue();
+				return (T) entry.getValue();
 			}
 
 		}
 
 		return null;
+	}
 
+	/**
+	 * Selects a random weighted item out of the collection. Returns null is
+	 * collection is empty, or all items have a weight of null.
+	 * 
+	 * @param items
+	 * @return
+	 */
+	public static IWeightedItem selectRandomWeightedItem(Collection<IWeightedItem> items) {
+		return selectRandomWeightedItem(items, null);
 	}
 
 }
