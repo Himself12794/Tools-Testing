@@ -23,8 +23,8 @@ public class EightQueensProblem {
 		
 		Chessboard chessboard = readChessboard(SCANNER);	
 		
-		System.out.println(chessboard);
-		System.out.println("Is valid? : " + chessboard.isValid());
+		//System.out.println(chessboard);
+		System.out.println(chessboard.isValid() ? "valid" : "invalid");
 		
 	}
 	
