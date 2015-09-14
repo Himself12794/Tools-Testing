@@ -218,7 +218,7 @@ public final class Util {
 		
 	}
 
-	public static <T> String toString(final T t) {
+	public static String toString(final Object t) {
 
 		final Class<?> clazz = t.getClass();
 
@@ -226,13 +226,12 @@ public final class Util {
 		value.append("[");
 
 		for (final Field field : clazz.getDeclaredFields()) {
+			field.setAccessible(true);
 			if (Modifier.isStatic(field.getModifiers())) {
 				continue;
 			}
 			try {
-				field.setAccessible(true);
 				value.append(field.getName() + "=" + field.get(t) + ", ");
-				field.setAccessible(false);
 			} catch (final Exception e) {
 				redirectLogError("An unexpected error occured in value mapping", e);
 			}
@@ -242,17 +241,6 @@ public final class Util {
 
 		return value.toString();
 
-	}
-
-	public static Byte[] arrayConversion(byte[] array) {
-
-		Byte[] value = new Byte[array.length];
-
-		for (int i = 0; i < value.length; i++) {
-			value[i] = array[i];
-		}
-
-		return value;
 	}
 	
 	public static boolean byteArrayStartsWith(byte[] value, byte[] pattern) {

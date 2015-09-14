@@ -15,22 +15,12 @@ public class EightQueensProblem {
 		ChessBoard chessboard = readChessboard(SCANNER);	
 				
 	}
-
-	public static class ConstructionCompleteException extends Exception {
-	
-		private static final long serialVersionUID = -7633388474844671437L;
-		
-		public ConstructionCompleteException(String msg) {
-			super(msg);
-		}
-		
-	}
 	
 	private static class ChessBoard {
 		
 		private final boolean[][] board = new boolean[8][8];
 		
-		public void readRow(String row, int rowNum) throws ConstructionCompleteException {
+		public void readRow(String row, int rowNum) throws IllegalArgumentException {
 			
 			if (rowNum >= 8) {
 				throw new IllegalArgumentException("Row must be between 0-7 inclusive");
@@ -55,6 +45,8 @@ public class EightQueensProblem {
 				}
 				
 			}
+			
+			return false;
 			
 		}
 		

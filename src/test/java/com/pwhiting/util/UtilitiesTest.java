@@ -16,6 +16,7 @@ import ch.qos.logback.classic.Level;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.pwhiting.util.RandomUtils.IWeightedItem;
 import com.pwhiting.util.lang.ClocData;
 import com.pwhiting.util.lang.ClocData.Header;
 import com.pwhiting.util.lang.ClocData.LangStats;
@@ -140,7 +141,7 @@ public class UtilitiesTest {
 		
 		for (int i = 0; i < iters; i++) {
 
-			IWeightedItem selection = RandomUtils.selectRandomWeightedItem(items, rand);
+			IWeightedItem selection = RandomUtils.selectRandomWeightedItem(rand, items);
 
 			if (!choices.containsKey(selection)) {
 				choices.put(selection, 1);
