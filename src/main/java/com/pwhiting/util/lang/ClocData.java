@@ -88,7 +88,7 @@ public class ClocData {
 		return ClocData.toString(this);
 	}
 
-	private static <T> String toString(final T t) {
+	private static String toString(final Object t) {
 
 		final Class<?> clazz = t.getClass();
 
