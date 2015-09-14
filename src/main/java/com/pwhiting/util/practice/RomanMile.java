@@ -1,4 +1,4 @@
-package com.pwhiting.util;
+package com.pwhiting.util.practice;
 
 import java.util.Scanner;
 

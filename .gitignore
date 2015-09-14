@@ -1,6 +1,12 @@
 /target/
+
 /.settings/
+
+/.metadata/
 /bin/
+
 /.project
+
 /.classpath
+
 /logs/
