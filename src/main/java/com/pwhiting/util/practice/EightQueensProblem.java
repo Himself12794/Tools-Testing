@@ -7,7 +7,7 @@ public class EightQueensProblem {
 	private static final Scanner SCANNER = new Scanner(System.in);
 	
 	private static Chessboard readChessboard(Scanner sc) {
-		Chessboard board = new Chessboard();
+		Chessboard board = new Chessboard(8);
 		
 		for (int i = 0; i < 8; i++) {
 			String row = sc.next();
@@ -28,7 +28,11 @@ public class EightQueensProblem {
 	
 	private static class Chessboard {
 		
-		private final boolean[][] board = new boolean[8][8];
+		private final boolean[][] board;
+		
+		public Chessboard(int size) {
+			board = new boolean[size][size];
+		}
 		
 		public void readRow(String row, int rowNum) throws IllegalArgumentException {
 			
