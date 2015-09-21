@@ -19,7 +19,7 @@ public final class RandomUtils {
 	}
 	
 	@SafeVarargs
-	public static <T extends IWeightedItem> T selectRandomWeightedItem(T...items) {
+	public static <T extends IWeightedItem> T selectRandomWeightedItem(Random rand, T...items) {
 		return selectRandomWeightedItem(rand, Lists.newArrayList(items));
 	}
 
