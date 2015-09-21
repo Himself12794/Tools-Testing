@@ -1,6 +1,5 @@
 package com.pwhiting.util.practice;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class EightQueensProblem {
@@ -72,13 +71,9 @@ public class EightQueensProblem {
 		private boolean checkNegSlope(int x, int y) {
 			
 			if (x >= 0 && y >= 0) {
-				int xT = x;
-				int yT = y;
-			
-				while (yT > 0 && xT > 0) {
-					xT--;
-					yT--;
-				}
+				int min = Math.min(x, y);
+				int xT = x - min;
+				int yT = y - min;
 				
 				while (xT < board.length && yT < board.length) {
 					boolean value = board[xT][yT];
@@ -95,7 +90,7 @@ public class EightQueensProblem {
 				throw new ArrayIndexOutOfBoundsException("Either x=" + x + " is out of bounds, or y=" + y + " is.");
 			}
 			
-			return true;
+			return false;
 			
 		}
 		
