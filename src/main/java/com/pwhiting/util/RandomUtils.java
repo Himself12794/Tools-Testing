@@ -35,7 +35,7 @@ public final class RandomUtils {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T extends IWeightedItem> T selectRandomWeightedItem(Radnom rand, Collection<T> items) {
+	public static <T extends IWeightedItem> T selectRandomWeightedItem(Random rand, Collection<T> items) {
 
 		if (rand == null) rand = new Random();
 
