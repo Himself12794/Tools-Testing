@@ -1,14 +1,8 @@
 package com.pwhiting.util;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.function.Consumer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
