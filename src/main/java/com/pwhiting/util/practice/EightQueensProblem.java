@@ -26,7 +26,7 @@ public class EightQueensProblem {
 		
 	}
 	
-	private static class Chessboard {
+	public static class Chessboard {
 		
 		private final boolean[][] board;
 		
@@ -36,7 +36,7 @@ public class EightQueensProblem {
 		
 		public void readRow(String row, int rowNum) throws IllegalArgumentException {
 			
-			if (rowNum >= 8) {
+			if (rowNum > board.length - 1 || rowNum < 0) {
 				throw new IllegalArgumentException("Row must be between 0-7 inclusive");
 			} else {
 				

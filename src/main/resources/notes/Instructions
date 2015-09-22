@@ -2,11 +2,11 @@
 2. When starting a problem
 	a) Create a new folder for the problem
 	b) Copy template.java into a new file
-	c) OPen the copied file in eclipse
+	c) Open the copied file in eclipse
 	d) Type in the example input file into input.txt
 	e) Type in the example output file into output.txt
 	f) Develop your solution
 	g) Compile your solution in a terminal
 	h) Run your solution
-	i) Compare output - If no message, solution good, prepare for submission, otherwise review amd revise
+	i) Compare output - If no message, solution good, prepare for submission, otherwise review and revise
 	 
