@@ -16,6 +16,7 @@ import ch.qos.logback.classic.Level;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Range;
 import com.pwhiting.util.RandomUtils.IWeightedItem;
 import com.pwhiting.util.lang.ClocData;
 import com.pwhiting.util.lang.ClocData.Header;
@@ -58,6 +59,17 @@ public class UtilitiesTest {
 		final ClocData data = new ClocData(new Header(), map2);
 
 		LOGGER.debug(data.toString());
+		
+		RangeLimitedDataContainer<Commit> rldc = new RangeLimitedDataContainer<Commit>();
+		
+		rldc.add(new Commit(15));
+		rldc.add(new Commit(25));
+		
+		assertTrue(rldc.size() == 2);
+		
+		rldc.limitToRange(Range.closed(10, 20));
+		
+		assertTrue(rldc.size() == 1);
 
 	}
 	
