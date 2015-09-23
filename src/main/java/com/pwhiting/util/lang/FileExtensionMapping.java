@@ -1,9 +1,9 @@
-package com.pwhiting.util;
+package com.pwhiting.util.lang;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.pwhiting.util.CodeSniffer.Language;
+import com.pwhiting.util.lang.CodeSniffer.Language;
 
 /**
  * Mapping extensions to languages.

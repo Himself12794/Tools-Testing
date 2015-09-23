@@ -218,7 +218,7 @@ public final class Util {
 		
 	}
 
-	public static <T> String toString(final T t) {
+	public static String toString(final Object t) {
 
 		final Class<?> clazz = t.getClass();
 
@@ -226,13 +226,12 @@ public final class Util {
 		value.append("[");
 
 		for (final Field field : clazz.getDeclaredFields()) {
+			field.setAccessible(true);
 			if (Modifier.isStatic(field.getModifiers())) {
 				continue;
 			}
 			try {
-				field.setAccessible(true);
 				value.append(field.getName() + "=" + field.get(t) + ", ");
-				field.setAccessible(false);
 			} catch (final Exception e) {
 				redirectLogError("An unexpected error occured in value mapping", e);
 			}
@@ -243,27 +242,17 @@ public final class Util {
 		return value.toString();
 
 	}
-
-	public static Byte[] arrayConversion(byte[] array) {
-
-		Byte[] value = new Byte[array.length];
-
-		for (int i = 0; i < value.length; i++) {
-			value[i] = array[i];
+	
+	public static boolean byteArrayStartsWith(byte[] value, byte[] pattern) {
+		
+		boolean status = false;
+		
+		if (value.length >= pattern.length) {
+			status = Arrays.equals(Arrays.copyOfRange(value, 0, pattern.length), pattern);
 		}
-
-		return value;
-	}
-
-	public static byte[] arrayConversion(Byte[] array) {
-
-		byte[] value = new byte[array.length];
-
-		for (int i = 0; i < value.length; i++) {
-			value[i] = array[i];
-		}
-
-		return value;
+		
+		return status;
+		
 	}
 
 	public static List<byte[]> byteArraySplit(byte[] value, byte[] pattern) {
