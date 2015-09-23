@@ -1,7 +1,5 @@
 package com.pwhiting.util;
 
-import java.util.Date;
-
 import com.google.common.collect.Range;
 
 public class Commit implements RangeLimitedData<Integer> {

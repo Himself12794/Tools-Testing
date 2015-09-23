@@ -68,15 +68,6 @@ public class RangeLimitedDataContainer<T extends RangeLimitedData<? extends Comp
 	}
 
 	/**
-	 * Gets the list associated with the data.
-	 *
-	 * @return if limited, the limited data, else the full data
-	 */
-	/*public List<T> getData() {
-		return isLimited() ? this.limitedData : this.data;
-	}*/
-
-	/**
 	 * The current date range used for this repo.
 	 *
 	 * @return
@@ -111,6 +102,11 @@ public class RangeLimitedDataContainer<T extends RangeLimitedData<? extends Comp
 		return !this.dateRange.equals(Range.all());
 	}
 
+	@Override
+	public Iterator<T> iterator() {
+		return isLimited() ? limitedData.iterator() : data.iterator();
+	}
+
 	/**
 	 * Limits returned data to a specific range. If you need to override this,
 	 * don't forget to call super.{@link #limitToRange(DateRange)} or it
@@ -137,11 +133,6 @@ public class RangeLimitedDataContainer<T extends RangeLimitedData<? extends Comp
 			}
 		}
 
-	}
-
-	@Override
-	public Iterator<T> iterator() {
-		return isLimited() ? limitedData.iterator() : data.iterator();
 	}
 	
 	public int size() {
