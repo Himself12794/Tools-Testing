@@ -1,5 +1,3 @@
-package com.pwhiting.util.practice;
-
 import java.util.Scanner;
 
 public class RomanMile {
