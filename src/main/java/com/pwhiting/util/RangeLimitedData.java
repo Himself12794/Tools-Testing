@@ -8,7 +8,7 @@ import com.google.common.collect.Range;
  * @author phwhitin
  *
  */
-public interface RangeLimitedData<C extends Comparable> {
+public interface RangeLimitedData<C extends Comparable<?>> {
 
 	/**
 	 * Check whether or not this data falls in the date range.
