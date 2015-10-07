@@ -30,6 +30,7 @@ public class Gameboard<T extends GamePiece> {
 		return boardLayout[x][y] != null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public T getPieceAt(int x, int y) {
 		if (hasPieceAt(x, y)) {
 			return (T) boardLayout[x][y];

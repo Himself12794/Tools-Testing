@@ -2,6 +2,7 @@ package com.pwhiting.game;
 
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 public interface GamePiece {
 	
 	/**

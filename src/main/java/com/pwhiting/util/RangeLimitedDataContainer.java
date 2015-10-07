@@ -19,6 +19,7 @@ import com.google.common.collect.Range;
  * @param <T>
  * @param <C>
  */
+@SuppressWarnings({"rawtypes","unchecked"})
 public class RangeLimitedDataContainer<T extends RangeLimitedData<? extends Comparable>> implements Iterable<T> {
 
 	private final List<T> data;
@@ -81,7 +82,6 @@ public class RangeLimitedDataContainer<T extends RangeLimitedData<? extends Comp
 	 *
 	 * @return the limited object
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public RangeLimitedDataContainer<T> includeAll() {
 		for (final T t : data) {
 			if (t instanceof RangeLimitedDataContainer) {
@@ -115,7 +115,6 @@ public class RangeLimitedDataContainer<T extends RangeLimitedData<? extends Comp
 	 * @param dateRange
 	 *            the date range to use
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void limitToRange(final Range dateRange) {
 
 		includeAll();

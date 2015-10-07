@@ -1,5 +1,3 @@
-package com.pwhiting.util.practice;
-
 import java.util.Scanner;
 
 public class EightQueensProblem {
@@ -101,13 +99,9 @@ public class EightQueensProblem {
 		private boolean checkPosSlope(int x, int y) {
 			
 			if (x < board.length + 1 && y >= 0) {
-				int xT = x;
-				int yT = y;
-				
-				while (xT < board.length - 1 && yT > 0) {
-					xT++;
-					yT--;
-				}
+				int min = Math.min(board.length - 1 - x, y - 0);
+				int xT = x + min;
+				int yT = y - min;
 				
 				while (xT > 0 && yT < board.length - 2) {
 					boolean value = board[xT][yT];

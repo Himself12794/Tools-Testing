@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+@SuppressWarnings("rawtypes")
 public enum ChessPiece implements GamePiece {
 
 	KING, ROOK, QUEEN, KNIGHT, PAWN, BISHOP;
