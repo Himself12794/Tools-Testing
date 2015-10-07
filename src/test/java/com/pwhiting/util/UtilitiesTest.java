@@ -60,14 +60,16 @@ public class UtilitiesTest {
 
 		LOGGER.debug(data.toString());
 		
-		RangeLimitedDataContainer<Commit> rldc = new RangeLimitedDataContainer<Commit>();
+		RangeLimitedDataContainer2<Integer> rldc = new RangeLimitedDataContainer2<Integer>();
 		
-		rldc.add(new Commit(15));
-		rldc.add(new Commit(25));
+		rldc.add(15);
+		rldc.add(25);
 		
 		assertTrue(rldc.size() == 2);
 		
-		rldc.limitToRange(Range.closed(10, 20));
+		Range<Integer> range = Range.closed(10, 20);
+		
+		rldc.limitToRange(range);
 		
 		assertTrue(rldc.size() == 1);
 
