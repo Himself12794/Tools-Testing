@@ -2,7 +2,7 @@ package com.pwhiting.util;
 
 import com.google.common.collect.Range;
 
-public class Commit implements RangeLimitedData<Integer> {
+public class Commit implements Comparable<Integer> {
 
 	private final int value;
 	
@@ -11,13 +11,13 @@ public class Commit implements RangeLimitedData<Integer> {
 	}
 	
 	@Override
-	public boolean isInRange(Range<Integer> range) {
-		return range.contains(value);
-	}
-	
-	@Override
 	public String toString() {
 		return String.valueOf(value);
+	}
+
+	@Override
+	public int compareTo(Integer arg0) {
+		return Integer.compare(value, arg0);
 	}
 
 }

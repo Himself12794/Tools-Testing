@@ -1,4 +1,4 @@
-package com.pwhiting.util;
+package com.pwhiting.collect;
 
 import java.util.ArrayList;
 import java.util.Iterator;
