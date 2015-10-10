@@ -3,8 +3,6 @@ package com.pwhiting.collect;
 import java.util.List;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.pwhiting.util.Commit;
 
 public class LimitedArrayList<E> extends AbstractLimitedList<E> {
 	

@@ -1,6 +1,5 @@
 package com.pwhiting.util;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;

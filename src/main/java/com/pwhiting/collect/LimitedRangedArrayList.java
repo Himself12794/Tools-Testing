@@ -3,7 +3,6 @@ package com.pwhiting.collect;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
 /**
