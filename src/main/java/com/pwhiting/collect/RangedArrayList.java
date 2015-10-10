@@ -1,4 +1,4 @@
-package com.pwhiting.util;
+package com.pwhiting.collect;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,8 +19,9 @@ import com.google.common.collect.Range;
  * @param <T>
  * @param <C>
  */
+// TODO make interface "ranged collection"
 @SuppressWarnings({"rawtypes","unchecked"})
-public class RangedList<C extends Comparable> implements List<C> {
+public class RangedArrayList<C extends Comparable> implements RangedList<C> {
 
 	private final List<C> data;
 
@@ -28,11 +29,11 @@ public class RangedList<C extends Comparable> implements List<C> {
 
 	private Range<C> dateRange = Range.all();
 
-	public RangedList() {
+	public RangedArrayList() {
 		this(new ArrayList<C>());
 	}
 
-	public RangedList(final List<C> data) {
+	public RangedArrayList(final List<C> data) {
 		this.data = data;
 		includeAll();
 	}
@@ -48,11 +49,11 @@ public class RangedList<C extends Comparable> implements List<C> {
 				: data.add(c);
 	}
 
-	public RangedList<C> copy() {
+	public RangedArrayList<C> copy() {
 
-		final RangedList<C> theCopy = new RangedList<C>(data);
+		final RangedArrayList<C> theCopy = new RangedArrayList<C>(data);
 		theCopy.dateRange = dateRange;
-		theCopy.limitedData = limitedData;
+		theCopy.limitedData = Lists.newArrayList(limitedData);
 
 		return theCopy;
 	}
@@ -69,7 +70,7 @@ public class RangedList<C extends Comparable> implements List<C> {
 	}
 
 	/**
-	 * The current date range used for this repo.
+	 * The current date range used for this list.
 	 *
 	 * @return
 	 */
@@ -82,7 +83,7 @@ public class RangedList<C extends Comparable> implements List<C> {
 	 *
 	 * @return the limited object
 	 */
-	public RangedList<C> includeAll() {
+	public void includeAll() {
 		/*for (final C t : data) {
 			if (t instanceof RangeLimitedDataContainer2) {
 				((RangeLimitedDataContainer2) t).limitToRange(Range.all());
@@ -90,7 +91,6 @@ public class RangedList<C extends Comparable> implements List<C> {
 		}*/
 		limitedData = Lists.newArrayList();
 		dateRange = Range.all();
-		return this;
 	}
 
 	/**
@@ -124,8 +124,8 @@ public class RangedList<C extends Comparable> implements List<C> {
 
 			if (dateRange.contains(c)) {
 
-				if (c instanceof RangedList) {
-					((RangedList) c).limitToRange(dateRange);
+				if (c instanceof RangedArrayList) {
+					((RangedArrayList) c).limitToRange(dateRange);
 				}
 
 				limitedData.add(c);

@@ -17,6 +17,8 @@ import ch.qos.logback.classic.Level;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
+import com.pwhiting.collect.RangedArrayList;
+import com.pwhiting.collect.RangedList;
 import com.pwhiting.util.RandomUtils.IWeightedItem;
 import com.pwhiting.util.lang.ClocData;
 import com.pwhiting.util.lang.ClocData.Header;
@@ -60,94 +62,29 @@ public class UtilitiesTest {
 
 		LOGGER.debug(data.toString());
 		
-		RangedList<Integer> rldc = new RangedList<Integer>();
+		RangedList<Integer> rl = new RangedArrayList<Integer>();
 		
-		rldc.add(15);
-		rldc.add(25);
+		rl.add(15);
+		rl.add(25);
 		
-		assertTrue(rldc.size() == 2);
+		assertTrue(rl.size() == 2);
 		
 		Range<Integer> range = Range.closed(10, 20);
 		
-		rldc.limitToRange(range);
+		rl.limitToRange(range);
 		
-		assertTrue(rldc.size() == 1);
+		assertTrue(rl.size() == 1);
 
 	}
 	
 	@Test
 	public void randomWeightedSelectionTest() {
-		IWeightedItem w1 = new IWeightedItem() {
+		IWeightedItem w1 = createWeightedItem(1.0F, "w1");
+		IWeightedItem w2 = createWeightedItem(5.0F, "w2");
+		IWeightedItem w3 = createWeightedItem(3.0F, "w3");
+		IWeightedItem w4 = createWeightedItem(0.001F, "w4");
+		IWeightedItem w5 = createWeightedItem(10.0F, "w5");
 
-			@Override
-			public float getWeight() {
-				return 1.0F;
-			}
-
-			@Override
-			public String toString() {
-				return "w1";
-			}
-
-		};
-
-		IWeightedItem w2 = new IWeightedItem() {
-
-			@Override
-			public float getWeight() {
-				return 5.0F;
-			}
-
-			@Override
-			public String toString() {
-				return "w2";
-			}
-
-		};
-
-		IWeightedItem w3 = new IWeightedItem() {
-
-			@Override
-			public float getWeight() {
-				return 3.0F;
-			}
-
-			@Override
-			public String toString() {
-				return "w3";
-			}
-
-		};
-
-		IWeightedItem w4 = new IWeightedItem() {
-
-			@Override
-			public float getWeight() {
-				return 0.001F;
-			}
-			
-			@Override
-			public String toString() {
-				return "w4";
-			}
-
-		};
-
-		IWeightedItem w5 = new IWeightedItem() {
-
-			@Override
-			public float getWeight() {
-				return 10.0F;
-			}
-
-			@Override
-			public String toString() {
-				return "w5";
-			}
-
-		};
-
-		List<IWeightedItem> items = Lists.newArrayList(w1, w2, w3, w4, w5);
 		Map<IWeightedItem, Integer> choices = Maps.newHashMap();
 		int iters = 50000;
 
@@ -155,7 +92,7 @@ public class UtilitiesTest {
 		
 		for (int i = 0; i < iters; i++) {
 
-			IWeightedItem selection = RandomUtils.selectRandomWeightedItem(rand, items);
+			IWeightedItem selection = RandomUtils.selectRandomWeightedItem(rand, w1, w2, w3, w4, w5);
 
 			if (!choices.containsKey(selection)) {
 				choices.put(selection, 1);
@@ -179,11 +116,27 @@ public class UtilitiesTest {
 		int iterations = 0;
 		
 		while (item != w4) {
-			item = RandomUtils.selectRandomWeightedItem(items);
+			item = RandomUtils.selectRandomWeightedItem(w1, w2, w3, w4, w5);
 			iterations++;
 		}
 		
 		System.out.println("Took " + iterations + " iterations for " + item + " to be chosen");
+	}
+	
+	private IWeightedItem createWeightedItem(float value, String name) {
+		return new IWeightedItem() {
+
+			@Override
+			public float getWeight() {
+				return value;
+			}
+
+			@Override
+			public String toString() {
+				return name;
+			}
+
+		};
 	}
 
 }

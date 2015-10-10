@@ -1,4 +1,4 @@
-package com.pwhiting.util;
+package com.pwhiting.collect;
 
 import com.google.common.collect.Range;
 
