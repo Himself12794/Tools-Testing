@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
@@ -137,7 +138,7 @@ public class UtilitiesTest {
 			
 		};
 		
-		List<Integer> integers = Lists.newArrayList(Util.asIterable(Range.closed(0, 15), 1));	
+		List<Integer> integers = Lists.newArrayList(Util.asIterable(Range.open(0, 15), 3));	
 		List<Integer> commits = new LimitedArrayList<Integer>(integers, filter);
 		
 		for (int commit : commits) {

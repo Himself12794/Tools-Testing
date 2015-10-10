@@ -21,6 +21,7 @@ public class LimitedArrayList<E> extends AbstractLimitedList<E> {
 	public LimitedArrayList(List<E> list, Predicate<E> filter) {
 		super(list, filter);
 	}
+	
 	@Override
 	public boolean isLimited() {
 		return filter != DEFAULT_FILTER;

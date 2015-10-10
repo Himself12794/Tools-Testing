@@ -31,6 +31,7 @@ public class Gameboard<T extends GamePiece> {
 			if (piece.isValidMove(this, x1, y1, x2, y2)) {
 				MoveOutcome<T> outcome = piece.onMoveToLocation(this, x2, y2, getPieceAt(x2, y2));
 				if (outcome.isValid()) {
+					setPieceAt(null, x1, y1);
 					return setPieceAt(outcome.resultantPiece, x2, y2);
 				}
 			}
@@ -59,9 +60,10 @@ public class Gameboard<T extends GamePiece> {
 		return x >= 0 || x <= boardSizeX - 1  || y >= 0 || y <= boardSizeY - 1;
 	}
 	
-	public boolean setPieceAt(T piece, int x, int y) {
+	public boolean setPieceAt(BoardPosition<T> piece, int x, int y) {
 		if (inRange(x, y)) {
-			//boardLayout[x][y] = new BoardPosition<T>(piece, );
+			boardLayout[x][y] = piece;
+			return true;
 		}
 		return false;
 	}
@@ -80,10 +82,10 @@ public class Gameboard<T extends GamePiece> {
 	
 	public static class MoveOutcome<T> {
 		
-		private final T resultantPiece;
+		private final BoardPosition<T> resultantPiece;
 		private final boolean shouldReplace;
 		
-		private MoveOutcome(boolean shouldReplace, T resultantPiece) {
+		private MoveOutcome(boolean shouldReplace, BoardPosition<T> resultantPiece) {
 			this.resultantPiece = resultantPiece;
 			this.shouldReplace = shouldReplace;
 		}
@@ -92,7 +94,7 @@ public class Gameboard<T extends GamePiece> {
 			return shouldReplace;
 		}
 		
-		public T getResultantPiece() {
+		public BoardPosition<T> getResultantPiece() {
 			return resultantPiece;
 		}
 		
@@ -112,14 +114,14 @@ public class Gameboard<T extends GamePiece> {
 		 * @param piece the piece to repace
 		 * @return
 		 */
-		public static MoveOutcome valid(GamePiece piece) {
+		public static <T extends GamePiece> MoveOutcome valid(BoardPosition<T> piece) {
 			return new MoveOutcome(true, piece);
 		}
 		
 	}
 	
 	/**
-	 * An immutable object representing a location on the game board.
+	 * Represents the piece, along with some meta-data.
 	 * 
 	 * @author Philip
 	 *

@@ -6,47 +6,34 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 public abstract class AbstractLimitedList<E> implements LimitedList<E>, LimitedCollection<E> {
 	
-	static final Predicate DEFAULT_FILTER = new Predicate() {
-
-		@Override
-		public boolean apply(Object input) {
-			return true;
-		}
-		
-	};
+	static final Predicate DEFAULT_FILTER = Predicates.alwaysTrue();
 	
 	protected final List<E> data;
 	
 	protected Predicate<? super E> filter = DEFAULT_FILTER;
 	
 	AbstractLimitedList() {
-		this(Lists.newArrayList());
+		this(Lists.<E>newArrayList());
 	}
 	
 	AbstractLimitedList(Predicate<? super E> filter) {
 		this();
-		limit(filter);
+		setFilter(filter);
 	}
 	
 	AbstractLimitedList(List<E> list) {
 		data = list;
 	}
 	
-	AbstractLimitedList(List<E> list, Predicate<E> filter) {
-		this(list);
-		limit(filter);
+	AbstractLimitedList(List<E> list, Predicate<? super E> filter) {
+		this(filter);
 		
-		Iterator<E> itr = data.iterator();
-		
-		while (itr.hasNext()) {
-			if (!filter.apply(itr.next())) {
-				itr.remove();
-			}
-		}
+		addAll(list);
 	}
 
 	@Override
@@ -125,7 +112,7 @@ public abstract class AbstractLimitedList<E> implements LimitedList<E>, LimitedC
 	}
 
 	@Override
-	public void limit(Predicate<? super E> filter) {
+	public void setFilter(Predicate<? super E> filter) {
 		this.filter = filter;
 	}
 

@@ -6,7 +6,7 @@ import com.google.common.base.Predicate;
 
 public interface LimitedCollection<E> extends Collection<E> {
 
-	void limit(Predicate<? super E> filter);
+	void setFilter(Predicate<? super E> filter);
 	
 	void removeLimit();
 	
