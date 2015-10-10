@@ -10,7 +10,7 @@ import java.util.Collection;
  *
  * @param <C>
  */
-public class RangedArrayListExclusive<C extends Comparable> extends RangedArrayList<C> {
+public class RangedArrayListExclusive<C extends Comparable> extends AbstractRangedList<C> {
 	
 	@Override
 	public boolean add(C c) {
@@ -27,6 +27,20 @@ public class RangedArrayListExclusive<C extends Comparable> extends RangedArrayL
 		}
 		
 		return hasResult;
+	}
+
+	@Override
+	public boolean addAll(int index, Collection<? extends C> c) {
+		// Because we are dealing with to lists here, it's best not to implement this
+		return false;
+	}
+
+	@Override
+	public void add(int index, C element) {}
+
+	@Override
+	public C set(int index, C element) {
+		return null;
 	}
 
 }
