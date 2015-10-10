@@ -6,7 +6,9 @@ import java.util.List;
 public interface GamePiece {
 	
 	/**
-	 * Called when a piece is moved to a position.
+	 * Called when a piece is moved to a position. If returned as valid, position automagically 
+	 * updated with resultant piece. Unless invalid, any changes done to location will be
+	 * overwritten.
 	 * 
 	 * @param piece
 	 */

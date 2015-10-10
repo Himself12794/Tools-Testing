@@ -2,7 +2,7 @@ package com.pwhiting.game;
 
 public class Gameboard<T extends GamePiece> {
 
-	private final BoardPosition[][] boardLayout;
+	private final BoardPosition<T>[][] boardLayout;
 	private final int boardSizeX;
 	private final int boardSizeY;
 	
@@ -16,8 +16,25 @@ public class Gameboard<T extends GamePiece> {
 		boardSizeY = sizeY;
 	}
 	
+	/**
+	 * Unlike set piece, this performs checks and analysis first.
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
 	public boolean tryMovePiece(int x1, int y1, int x2, int y2) {
-		//if ()
+		if (hasPieceAt(x1, y1)) {
+			T piece = getPieceAt(x1, y1);
+			if (piece.isValidMove(this, x1, y1, x2, y2)) {
+				MoveOutcome<T> outcome = piece.onMoveToLocation(this, x2, y2, getPieceAt(x2, y2));
+				if (outcome.isValid()) {
+					return setPieceAt(outcome.resultantPiece, x2, y2);
+				}
+			}
+		}
 		return false;
 	}
 	
@@ -30,10 +47,9 @@ public class Gameboard<T extends GamePiece> {
 		return boardLayout[x][y] != null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public T getPieceAt(int x, int y) {
 		if (hasPieceAt(x, y)) {
-			return (T) boardLayout[x][y];
+			return boardLayout[x][y].getPiece();
 		} else {
 			return null;
 		}
@@ -43,10 +59,11 @@ public class Gameboard<T extends GamePiece> {
 		return x >= 0 || x <= boardSizeX - 1  || y >= 0 || y <= boardSizeY - 1;
 	}
 	
-	public void setPieceAt(T piece, int x, int y) {
+	public boolean setPieceAt(T piece, int x, int y) {
 		if (inRange(x, y)) {
-		//	boardLayout[x][y] = piece;
+			//boardLayout[x][y] = new BoardPosition<T>(piece, );
 		}
+		return false;
 	}
 	
 	public static class Coordinate {
@@ -61,12 +78,12 @@ public class Gameboard<T extends GamePiece> {
 		
 	}
 	
-	public static class MoveOutcome {
+	public static class MoveOutcome<T> {
 		
-		private final GamePiece resultantPiece;
+		private final T resultantPiece;
 		private final boolean shouldReplace;
 		
-		private MoveOutcome(boolean shouldReplace, GamePiece resultantPiece) {
+		private MoveOutcome(boolean shouldReplace, T resultantPiece) {
 			this.resultantPiece = resultantPiece;
 			this.shouldReplace = shouldReplace;
 		}
@@ -75,7 +92,7 @@ public class Gameboard<T extends GamePiece> {
 			return shouldReplace;
 		}
 		
-		public GamePiece getResultantPiece() {
+		public T getResultantPiece() {
 			return resultantPiece;
 		}
 		
@@ -107,12 +124,12 @@ public class Gameboard<T extends GamePiece> {
 	 * @author Philip
 	 *
 	 */
-	public static class BoardPosition {
+	public static class BoardPosition<T> {
 		
-		private final GamePiece thePiece;
+		private final T thePiece;
 		private final Color theColor;
 		
-		public BoardPosition(GamePiece piece, Color color) {
+		public BoardPosition(T piece, Color color) {
 			thePiece = piece;
 			theColor = color;
 		}
@@ -121,8 +138,12 @@ public class Gameboard<T extends GamePiece> {
 			return new BoardPosition(thePiece, color);
 		}
 		
-		public BoardPosition withPiece(GamePiece piece) {
+		public BoardPosition withPiece(T piece) {
 			return new BoardPosition(piece, theColor);
+		}
+		
+		public T getPiece() {
+			return thePiece;
 		}
 		
 	}

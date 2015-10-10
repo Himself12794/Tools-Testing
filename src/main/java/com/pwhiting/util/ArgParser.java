@@ -1,6 +1,5 @@
 package com.pwhiting.util;
 
-import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -170,46 +169,6 @@ public final class ArgParser {
 		}
 
 		return num;
-	}
-
-	/**
-	 * Tries to get the key as a Long, then tries to instantiate a new class of
-	 * type V. If fails, returns null.
-	 *
-	 * @param key
-	 * @param k
-	 * @param v
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public <V> V getLongAsType(final String key, final Class<V> v) {
-
-		final Long value = getLong(key);
-
-		if (value != null) {
-			for (final Constructor<?> c : v.getConstructors()) {
-
-				if (c.getParameterTypes().length == 1) {
-
-					for (final Class<?> clazz : c.getParameterTypes()) {
-
-						if (clazz.equals(Long.class) || "long".equals(clazz.getName())) {
-							try {
-								return (V) c.newInstance(value);
-							} catch (final Exception e) {
-								LOGGER.debug("Failure in type conversion", e);
-							}
-						}
-
-					}
-
-				}
-
-			}
-		}
-
-		return null;
-
 	}
 
 	/**

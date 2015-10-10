@@ -30,14 +30,14 @@ public final class RandomUtils {
 	 * @param items
 	 * @return
 	 */
-	public static <T extends IWeightedItem> T selectRandomWeightedItem(Collection<T> items) {
+	public static <T extends IWeightedItem> T selectRandomWeightedItem(Iterable<T> items) {
 		return selectRandomWeightedItem(null, items);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T extends IWeightedItem> T selectRandomWeightedItem(Random rand, Collection<T> items) {
-
-		if (rand == null) rand = new Random();
+	public static <T extends IWeightedItem> T selectRandomWeightedItem(Random rand, Iterable<T> items) {
+		
+		Random randToUse = rand;
+		if (rand == null) randToUse = new Random();
 
 		float totalWeight = 0.0F;
 		Map<Range, T> ranges = Maps.newHashMap();
@@ -54,7 +54,7 @@ public final class RandomUtils {
 			
 		}
 
-		float choice = rand.nextFloat() * totalWeight;
+		float choice = randToUse.nextFloat() * totalWeight;
 
 		for (Entry<Range, T> entry : ranges.entrySet()) {
 

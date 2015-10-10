@@ -2,11 +2,7 @@ package com.pwhiting.collect;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
 
 /**
  * Represents a data structure whose data entries can be restricted to a certain

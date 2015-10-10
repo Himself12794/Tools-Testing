@@ -31,12 +31,14 @@ public class RangedArrayListExclusive<C extends Comparable> extends AbstractRang
 
 	@Override
 	public boolean addAll(int index, Collection<? extends C> c) {
-		// Because we are dealing with to lists here, it's best not to implement this
-		return false;
+		return addAll(c);
 	}
 
 	@Override
-	public void add(int index, C element) {}
+	public void add(int index, C element) {
+		// Add at index unsupported,defaults to regular add
+		add(element);
+	}
 
 	@Override
 	public C set(int index, C element) {

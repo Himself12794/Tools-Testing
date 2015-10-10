@@ -1,6 +1,7 @@
 package com.pwhiting.collect;
 
 import java.util.Collection;
+
 import com.google.common.collect.Range;
 
 /**

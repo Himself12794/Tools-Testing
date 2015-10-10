@@ -2,7 +2,6 @@ package com.pwhiting.util;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -12,9 +11,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.classic.Level;
-
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.pwhiting.collect.RangedArrayList;
@@ -25,6 +21,8 @@ import com.pwhiting.util.lang.ClocData.Header;
 import com.pwhiting.util.lang.ClocData.LangStats;
 import com.pwhiting.util.lang.ClocService;
 import com.pwhiting.util.lang.CodeSniffer.Language;
+
+import ch.qos.logback.classic.Level;
 
 public class UtilitiesTest {
 	

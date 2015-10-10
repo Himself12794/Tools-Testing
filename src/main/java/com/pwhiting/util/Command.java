@@ -10,12 +10,12 @@ import com.google.common.collect.Lists;
 
 public class Command {
 
-	private final String command;
+	private final String baseCommand;
 	private List<String> args = new ArrayList<String>();
 	private boolean isFinalized;
 	
 	public Command() {
-		command = "";
+		baseCommand = "";
 	}
 	
 	public Command(Object obj) {
@@ -23,7 +23,7 @@ public class Command {
 	}
 	
 	public Command(String command) {
-		this.command = command;
+		this.baseCommand = command;
 	}
 	
 	public Command(String command, String[] args) {
@@ -64,7 +64,10 @@ public class Command {
 	 * @return this
 	 */
 	public Command addParameter(String name, String value) {
-		if (!isFinalized) args.add("--" + name + '=' + value);
+		if (!isFinalized && name != null) {
+			if (!Util.nullOrEmpty(value)) args.add("--" + name + '=' + value);
+			else args.add("--" + name);
+		}
 		return this;
 	}
 	
@@ -86,8 +89,8 @@ public class Command {
 	 * @throws IOException
 	 */
 	public String execute() throws IOException {
-		String[] args = this.args.toArray(new String[this.args.size()]);
-		return CommandLineUtils.executeCommand(command, args);
+		String[] argsAsArray = this.args.toArray(new String[this.args.size()]);
+		return CommandLineUtils.executeCommand(baseCommand, argsAsArray);
 	}
 	
 	public String execute(Object...args) throws IOException {
@@ -108,7 +111,7 @@ public class Command {
 	public String execute(String...args) throws IOException {
 		List<String> temp = new ArrayList<String>(this.args);
 		temp.addAll(Arrays.asList(args));
-		return CommandLineUtils.executeCommand(command, temp.toArray(new String[temp.size()]));
+		return CommandLineUtils.executeCommand(baseCommand, temp.toArray(new String[temp.size()]));
 	}
 	
 	
@@ -127,9 +130,7 @@ public class Command {
 		public String executeChain() throws IOException {
 			StringBuilder value = new StringBuilder();
 			for (Command command : this) {
-				System.out.println("Executing command: " + command.command + " with args: " + command.args);
 				String output = command.execute();
-				System.out.println(output);
 				value.append(output);
 			}
 			return value.toString();

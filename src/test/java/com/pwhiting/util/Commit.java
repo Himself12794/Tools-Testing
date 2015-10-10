@@ -1,7 +1,5 @@
 package com.pwhiting.util;
 
-import com.google.common.collect.Range;
-
 public class Commit implements Comparable<Integer> {
 
 	private final int value;

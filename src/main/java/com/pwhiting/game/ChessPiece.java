@@ -9,6 +9,7 @@ public enum ChessPiece implements GamePiece {
 
 	KING, ROOK, QUEEN, KNIGHT, PAWN, BISHOP;
 	
+	@Override
 	public boolean isValidMove(Gameboard board, int x, int y, int x2, int y2) {
 		return false;
 	}
