@@ -4,12 +4,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.BoundType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
@@ -288,6 +290,49 @@ public final class Util {
 	
 	public static boolean nullOrEmpty(String value) {
 		return value == null || "".equals(value);
+	}
+	
+	public static Iterable<Integer> asIterable(Range<Integer> range, int step) {
+		return new RangeIterable(range, step);
+	}
+	
+	public static class RangeIterable implements Iterable<Integer> {
+		
+		private final Range<Integer> theRange;
+		private final int step;		
+		
+		private RangeIterable(Range range, int step) {
+			theRange = range;
+			this.step = step;
+		}
+
+		@Override
+		public Iterator<Integer> iterator() {
+			return new Itr();
+		}
+		
+		public class Itr implements Iterator<Integer> {
+			
+			private int currValue = theRange.lowerEndpoint();
+			
+			private Itr() {
+				if (theRange.lowerBoundType() == BoundType.OPEN) currValue++;
+			}
+
+			@Override
+			public boolean hasNext() {
+				return theRange.contains(currValue);
+			}
+
+			@Override
+			public Integer next() {
+				int value = currValue;
+				currValue += step;
+				return value;
+			}
+			
+		}
+		
 	}
 
 }

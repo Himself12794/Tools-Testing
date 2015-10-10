@@ -2,6 +2,7 @@ package com.pwhiting.util;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -11,8 +12,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
+import com.pwhiting.collect.LimitedArrayList;
 import com.pwhiting.collect.RangedArrayList;
 import com.pwhiting.collect.RangedList;
 import com.pwhiting.util.RandomUtils.IWeightedItem;
@@ -119,6 +123,27 @@ public class UtilitiesTest {
 		}
 		
 		System.out.println("Took " + iterations + " iterations for " + item + " to be chosen");
+	}
+	
+	@Test
+	public void testLimitedList() {
+		
+		Predicate<Integer> filter = new Predicate<Integer>() {
+
+			@Override
+			public boolean apply(Integer input) {
+				return input >= 1 && input <= 5;
+			}
+			
+		};
+		
+		List<Integer> integers = Lists.newArrayList(Util.asIterable(Range.closed(0, 15), 1));	
+		List<Integer> commits = new LimitedArrayList<Integer>(integers, filter);
+		
+		for (int commit : commits) {
+			assertTrue(filter.apply(commit));
+		}
+		
 	}
 	
 	private IWeightedItem createWeightedItem(float value, String name) {

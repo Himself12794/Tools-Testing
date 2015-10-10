@@ -137,9 +137,13 @@ public abstract class AbstractRangedList<C extends Comparable> implements Ranged
 
 	@Override
 	public boolean remove(Object o) {
-		boolean v = data.remove(o);
-		reassess();
-		return v;
+		boolean result = false;
+		if (isLimited()){
+			result = limitedData.remove(o);
+		}
+		result |= data.remove(o);
+		
+		return result;
 	}
 
 	@Override
@@ -151,9 +155,7 @@ public abstract class AbstractRangedList<C extends Comparable> implements Ranged
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		boolean v = data.removeAll(c);
-		reassess();
-		return v;
+		return data.removeAll(c) || limitedData.removeAll(c);
 	}
 
 	@Override
