@@ -5,29 +5,26 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
 /**
  * Represents a data structure whose data entries can be restricted to a certain
- * range. Unlike {@link RangeLimitedDataContainer}, this is not recursive.
+ * range. New elements added to this list are kept, but also hidden if they do 
+ * not fall into the range.
  *
  * @author phwhitin
  *
  * @param <T>
  * @param <C>
  */
-// TODO make interface "ranged collection"
-@SuppressWarnings({"rawtypes","unchecked"})
 public class RangedArrayList<C extends Comparable> implements RangedList<C> {
 
-	private final List<C> data;
+	protected final List<C> data;
 
-	private List<C> limitedData = Lists.newArrayList();
+	protected List<C> limitedData = Lists.newArrayList();
 
-	private Range<C> dateRange = Range.all();
+	protected Range<C> range = Range.all();
 
 	public RangedArrayList() {
 		this(new ArrayList<C>());
@@ -38,68 +35,40 @@ public class RangedArrayList<C extends Comparable> implements RangedList<C> {
 		includeAll();
 	}
 
-	/**
-	 * Delegate for {@link List#add(Object)}.
-	 *
-	 * @param c
-	 * @return
-	 */
+	@Override
 	public boolean add(final C c) {
-		return dateRange.contains(c) ? data.add(c) && limitedData.add(c)
+		return range.contains(c) ? data.add(c) && limitedData.add(c)
 				: data.add(c);
 	}
 
 	public RangedArrayList<C> copy() {
 
 		final RangedArrayList<C> theCopy = new RangedArrayList<C>(data);
-		theCopy.dateRange = dateRange;
+		theCopy.range = range;
 		theCopy.limitedData = Lists.newArrayList(limitedData);
 
 		return theCopy;
 	}
 
-	/**
-	 * Delegate for {@link List#get(int)}. Works appropriately if the data is
-	 * limited.
-	 *
-	 * @param index
-	 * @return
-	 */
+	@Override
 	public C get(final int index) {
 		return isLimited() ? limitedData.get(index) : data.get(index);
 	}
 
-	/**
-	 * The current date range used for this list.
-	 *
-	 * @return
-	 */
+	@Override
 	public Range<C> getRange() {
-		return dateRange;
+		return range;
 	}
 
-	/**
-	 * Removes any date limits imposed.
-	 *
-	 * @return the limited object
-	 */
+	@Override
 	public void includeAll() {
-		/*for (final C t : data) {
-			if (t instanceof RangeLimitedDataContainer2) {
-				((RangeLimitedDataContainer2) t).limitToRange(Range.all());
-			}
-		}*/
 		limitedData = Lists.newArrayList();
-		dateRange = Range.all();
+		range = Range.all();
 	}
 
-	/**
-	 * Determines if the data is limited.
-	 *
-	 * @return whether or not the data is limited
-	 */
+	@Override
 	public boolean isLimited() {
-		return !this.dateRange.equals(Range.all());
+		return !this.range.equals(Range.all());
 	}
 
 	@Override
@@ -107,25 +76,18 @@ public class RangedArrayList<C extends Comparable> implements RangedList<C> {
 		return isLimited() ? limitedData.iterator() : data.iterator();
 	}
 
-	/**
-	 * Limits returned data to a specific range. If you need to override this,
-	 * don't forget to call super.{@link #limitToRange(DateRange)} or it
-	 * won't work correctly.
-	 *
-	 * @param dateRange
-	 *            the date range to use
-	 */
-	public void limitToRange(final Range<C> dateRange) {
+	@Override
+	public void limitToRange(final Range<C> range) {
 
 		includeAll();
-		this.dateRange = dateRange;
+		this.range = range;
 
 		for (final C c : data) {
 
-			if (dateRange.contains(c)) {
+			if (range.contains(c)) {
 
 				if (c instanceof RangedArrayList) {
-					((RangedArrayList) c).limitToRange(dateRange);
+					((RangedArrayList) c).limitToRange(range);
 				}
 
 				limitedData.add(c);
@@ -134,6 +96,7 @@ public class RangedArrayList<C extends Comparable> implements RangedList<C> {
 
 	}
 	
+	@Override
 	public int size() {
 		return isLimited() ? limitedData.size() : data.size();
 	}

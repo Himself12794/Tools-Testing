@@ -1,24 +1,26 @@
 package com.pwhiting.collect;
 
 import java.util.Collection;
-import java.util.Iterator;
-
-import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
+/**
+ * A collection whose members can be limited to a certain range. 
+ * 
+ * @author Philip
+ *
+ * @param <C>
+ */
 public interface RangedCollection<C extends Comparable> extends Collection<C> {
 
-
-
 	/**
-	 * The current date range used for this list.
+	 * The current range used for this collection.
 	 *
 	 * @return
 	 */
 	Range<C> getRange();
 
 	/**
-	 * Removes any date limits imposed.
+	 * Removes any limits imposed.
 	 *
 	 * @return the limited object
 	 */
@@ -32,13 +34,11 @@ public interface RangedCollection<C extends Comparable> extends Collection<C> {
 	boolean isLimited();
 
 	/**
-	 * Limits returned data to a specific range. If you need to override this,
-	 * don't forget to call super.{@link #limitToRange(DateRange)} or it
-	 * won't work correctly.
+	 * Limits returned data to a specific range. 
 	 *
-	 * @param dateRange
-	 *            the date range to use
+	 * @param range
+	 *            the range to use
 	 */
-	void limitToRange(final Range<C> dateRange);
+	void limitToRange(final Range<C> range);
 	
 }
