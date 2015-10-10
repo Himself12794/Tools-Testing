@@ -60,7 +60,7 @@ public class UtilitiesTest {
 
 		LOGGER.debug(data.toString());
 		
-		RangeLimitedDataContainer2<Integer> rldc = new RangeLimitedDataContainer2<Integer>();
+		RangedList<Integer> rldc = new RangedList<Integer>();
 		
 		rldc.add(15);
 		rldc.add(25);

@@ -20,7 +20,7 @@ import com.google.common.collect.Range;
  * @param <C>
  */
 @SuppressWarnings({"rawtypes","unchecked"})
-public class RangeLimitedDataContainer2<C extends Comparable> implements List<C> {
+public class RangedList<C extends Comparable> implements List<C> {
 
 	private final List<C> data;
 
@@ -28,11 +28,11 @@ public class RangeLimitedDataContainer2<C extends Comparable> implements List<C>
 
 	private Range<C> dateRange = Range.all();
 
-	public RangeLimitedDataContainer2() {
+	public RangedList() {
 		this(new ArrayList<C>());
 	}
 
-	public RangeLimitedDataContainer2(final List<C> data) {
+	public RangedList(final List<C> data) {
 		this.data = data;
 		includeAll();
 	}
@@ -48,9 +48,9 @@ public class RangeLimitedDataContainer2<C extends Comparable> implements List<C>
 				: data.add(c);
 	}
 
-	public RangeLimitedDataContainer2<C> copy() {
+	public RangedList<C> copy() {
 
-		final RangeLimitedDataContainer2<C> theCopy = new RangeLimitedDataContainer2<C>(data);
+		final RangedList<C> theCopy = new RangedList<C>(data);
 		theCopy.dateRange = dateRange;
 		theCopy.limitedData = limitedData;
 
@@ -82,7 +82,7 @@ public class RangeLimitedDataContainer2<C extends Comparable> implements List<C>
 	 *
 	 * @return the limited object
 	 */
-	public RangeLimitedDataContainer2<C> includeAll() {
+	public RangedList<C> includeAll() {
 		/*for (final C t : data) {
 			if (t instanceof RangeLimitedDataContainer2) {
 				((RangeLimitedDataContainer2) t).limitToRange(Range.all());
@@ -124,8 +124,8 @@ public class RangeLimitedDataContainer2<C extends Comparable> implements List<C>
 
 			if (dateRange.contains(c)) {
 
-				if (c instanceof RangeLimitedDataContainer2) {
-					((RangeLimitedDataContainer2) c).limitToRange(dateRange);
+				if (c instanceof RangedList) {
+					((RangedList) c).limitToRange(dateRange);
 				}
 
 				limitedData.add(c);
