@@ -2,6 +2,7 @@ package com.pwhiting.util;
 
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,13 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.pwhiting.collect.LimitedArrayList;
 import com.pwhiting.collect.RangedArrayList;
 import com.pwhiting.collect.RangedList;
+import com.pwhiting.game.ChessPiece;
+import com.pwhiting.game.Gameboard;
+import com.pwhiting.game.Gameboard.BoardPosition;
 import com.pwhiting.util.RandomUtils.IWeightedItem;
 import com.pwhiting.util.lang.ClocData;
 import com.pwhiting.util.lang.ClocData.Header;
@@ -147,7 +150,22 @@ public class UtilitiesTest {
 		
 	}
 	
-	private IWeightedItem createWeightedItem(float value, String name) {
+	@Test
+	public void gameTest() {
+		
+		Gameboard<ChessPiece> chessBoard = new Gameboard<ChessPiece>(8);
+		
+		chessBoard.setPieceAt(new BoardPosition<ChessPiece>(ChessPiece.KING, Color.BLACK), 	1, 1);
+		
+		assertTrue(chessBoard.getPieceAt(1, 1).getPiece() == ChessPiece.KING);
+		
+		for (BoardPosition<ChessPiece> bp : chessBoard) {
+			System.out.println(bp);
+		}
+		
+	}
+	
+	private IWeightedItem createWeightedItem(final float value, final String name) {
 		return new IWeightedItem() {
 
 			@Override

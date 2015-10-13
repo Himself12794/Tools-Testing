@@ -1,6 +1,20 @@
 package com.pwhiting.game;
 
-public class Gameboard<T extends GamePiece> {
+import java.awt.Color;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
+/**
+ * A game board holding Game Pieces
+ * 
+ * @author Philip
+ *
+ * @param <T>
+ */
+public class Gameboard<T extends GamePiece> implements Iterable<Gameboard.BoardPosition<T>>{
 
 	private final BoardPosition<T>[][] boardLayout;
 	private final int boardSizeX;
@@ -14,6 +28,21 @@ public class Gameboard<T extends GamePiece> {
 		boardLayout = new BoardPosition[sizeX][sizeY];
 		boardSizeX = sizeX;
 		boardSizeY = sizeY;
+		populateEmptyBoard();
+	}
+	
+	private void populateEmptyBoard() {
+		
+		for (int i = 0; i < boardLayout.length; i++) {
+			
+			for (int j = 0; j < boardLayout[i].length; ++j) {
+				BoardPosition<T> bp = new BoardPosition<T>();
+				bp.xPos = i;
+				bp.yPos = j;
+				boardLayout[i][j] = bp;
+			}
+			
+		}
 	}
 	
 	/**
@@ -27,9 +56,9 @@ public class Gameboard<T extends GamePiece> {
 	 */
 	public boolean tryMovePiece(int x1, int y1, int x2, int y2) {
 		if (hasPieceAt(x1, y1)) {
-			T piece = getPieceAt(x1, y1);
-			if (piece.isValidMove(this, x1, y1, x2, y2)) {
-				MoveOutcome<T> outcome = piece.onMoveToLocation(this, x2, y2, getPieceAt(x2, y2));
+			T piece = getPieceAt(x1, y1).getPiece();
+			if (piece.isValidMove(this, getPieceAt(x1, y1), getPieceAt(x2, y2))) {
+				MoveOutcome outcome = piece.onMovePiece(this, getPieceAt(x1, x2), getPieceAt(x2, y2));
 				if (outcome.isValid()) {
 					setPieceAt(null, x1, y1);
 					return setPieceAt(outcome.resultantPiece, x2, y2);
@@ -45,47 +74,63 @@ public class Gameboard<T extends GamePiece> {
 			return false;
 		}
 		
-		return boardLayout[x][y] != null;
+		return !boardLayout[x][y].isEmpty();
 	}
 	
-	public T getPieceAt(int x, int y) {
-		if (hasPieceAt(x, y)) {
-			return boardLayout[x][y].getPiece();
-		} else {
-			return null;
-		}
+	public BoardPosition<T> getPieceAt(int x, int y) {
+		return boardLayout[x][y];
 	}
 	
-	private boolean inRange(int x, int y) {
+	protected boolean inRange(int x, int y) {
 		return x >= 0 || x <= boardSizeX - 1  || y >= 0 || y <= boardSizeY - 1;
 	}
 	
 	public boolean setPieceAt(BoardPosition<T> piece, int x, int y) {
 		if (inRange(x, y)) {
+			BoardPosition<T> bp = piece == null ? new BoardPosition<T>() : piece;
+			piece.xPos = x;
+			piece.yPos = y;
 			boardLayout[x][y] = piece;
 			return true;
 		}
 		return false;
 	}
 	
-	public static class Coordinate {
-		
-		public final int x;
-		public final int y;
-		
-		public Coordinate(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		
+	/**
+	 * Sets the outcome as invalid
+	 * 
+	 * @return
+	 */
+	public MoveOutcome generateInvalidOutcome() {
+		return new MoveOutcome(false, null);
 	}
 	
-	public static class MoveOutcome<T> {
+	/**
+	 * Set the collision as valid.
+	 * Give a null value for both pieces to disappear.
+	 * 
+	 * @param piece the piece to repace
+	 * @return
+	 */
+	public MoveOutcome generateValidOutcome(boolean shouldReplace, BoardPosition<T> resultantPiece) {
+		return new MoveOutcome(shouldReplace, resultantPiece);
+	}
+
+	@Override
+	public Iterator<BoardPosition<T>> iterator() {
+		List<BoardPosition<T>> helper = Lists.newArrayList();
+		for (BoardPosition<T>[] bp : boardLayout) {
+			Collections.addAll(helper, bp);
+		}
+		return helper.iterator();
+	}
+	
+	public class MoveOutcome {
 		
 		private final BoardPosition<T> resultantPiece;
 		private final boolean shouldReplace;
 		
-		private MoveOutcome(boolean shouldReplace, BoardPosition<T> resultantPiece) {
+		public MoveOutcome(boolean shouldReplace, BoardPosition<T> resultantPiece) {
 			this.resultantPiece = resultantPiece;
 			this.shouldReplace = shouldReplace;
 		}
@@ -96,26 +141,6 @@ public class Gameboard<T extends GamePiece> {
 		
 		public BoardPosition<T> getResultantPiece() {
 			return resultantPiece;
-		}
-		
-		/**
-		 * Sets the outcome as invalid
-		 * 
-		 * @return
-		 */
-		public static MoveOutcome invalid() {
-			return new MoveOutcome(false, null);
-		}
-		
-		/**
-		 * Set the collision as valid.
-		 * Give a null value for both pieces to disappear.
-		 * 
-		 * @param piece the piece to repace
-		 * @return
-		 */
-		public static <T extends GamePiece> MoveOutcome valid(BoardPosition<T> piece) {
-			return new MoveOutcome(true, piece);
 		}
 		
 	}
@@ -130,10 +155,20 @@ public class Gameboard<T extends GamePiece> {
 		
 		private final T thePiece;
 		private final Color theColor;
+		private final boolean isEmpty;
+		int xPos;
+		int yPos;
 		
-		public BoardPosition(T piece, Color color) {
+		public BoardPosition() {
+			thePiece = null;
+			theColor = null;
+			isEmpty = true;
+		}
+		
+		public BoardPosition(T piece, Color black) {
 			thePiece = piece;
-			theColor = color;
+			theColor = black;
+			isEmpty = false;
 		}
 		
 		public BoardPosition withColor(Color color) {
@@ -144,16 +179,36 @@ public class Gameboard<T extends GamePiece> {
 			return new BoardPosition(piece, theColor);
 		}
 		
+		/**
+		 * The associated piece. May be null.
+		 * 
+		 * @return
+		 */
 		public T getPiece() {
 			return thePiece;
 		}
 		
+		public boolean isEmpty() {
+			return isEmpty;
+		}
+		
+		public String toString() {
+			return !isEmpty ? "Piece: " + thePiece + ", Color: " + theColor.getRGB() : "Empty Position";
+		}
+		
 	}
 	
-	public static enum Color {
-		RED, BLACK, WHITE
+	public static class Coordinate {
+		
+		public final int x;
+		public final int y;
+		
+		public Coordinate(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+		
 	}
-	
 	
 	
 }
