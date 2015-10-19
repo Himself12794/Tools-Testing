@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
  *
  * @param <T>
  */
-public class Gameboard<T extends GamePiece> implements Iterable<Gameboard.BoardPosition<T>>{
+public class Gameboard<T extends GamePiece<T>> implements Iterable<Gameboard.BoardPosition<T>>{
 
 	private final BoardPosition<T>[][] boardLayout;
 	private final int boardSizeX;
@@ -24,6 +24,7 @@ public class Gameboard<T extends GamePiece> implements Iterable<Gameboard.BoardP
 		this(size,size);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Gameboard(int sizeX, int sizeY) {
 		boardLayout = new BoardPosition[sizeX][sizeY];
 		boardSizeX = sizeX;
@@ -56,9 +57,9 @@ public class Gameboard<T extends GamePiece> implements Iterable<Gameboard.BoardP
 	 */
 	public boolean tryMovePiece(int x1, int y1, int x2, int y2) {
 		if (hasPieceAt(x1, y1)) {
-			T piece = getPieceAt(x1, y1).getPiece();
-			if (piece.isValidMove(this, getPieceAt(x1, y1), getPieceAt(x2, y2))) {
-				MoveOutcome outcome = piece.onMovePiece(this, getPieceAt(x1, x2), getPieceAt(x2, y2));
+			T piece = getPosition(x1, y1).getPiece();
+			if (piece.isValidMove(this, getPosition(x1, y1), getPosition(x2, y2))) {
+				MoveOutcome outcome = piece.onMovePiece(this, getPosition(x1, x2), getPosition(x2, y2));
 				if (outcome.isValid()) {
 					setPieceAt(null, x1, y1);
 					return setPieceAt(outcome.resultantPiece, x2, y2);
@@ -77,7 +78,7 @@ public class Gameboard<T extends GamePiece> implements Iterable<Gameboard.BoardP
 		return !boardLayout[x][y].isEmpty();
 	}
 	
-	public BoardPosition<T> getPieceAt(int x, int y) {
+	public BoardPosition<T> getPosition(int x, int y) {
 		return boardLayout[x][y];
 	}
 	

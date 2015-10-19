@@ -13,8 +13,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.classic.Level;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -31,6 +29,8 @@ import com.pwhiting.util.lang.ClocData.Header;
 import com.pwhiting.util.lang.ClocData.LangStats;
 import com.pwhiting.util.lang.ClocService;
 import com.pwhiting.util.lang.CodeSniffer.Language;
+
+import ch.qos.logback.classic.Level;
 
 public class UtilitiesTest {
 	
@@ -157,7 +157,7 @@ public class UtilitiesTest {
 		
 		chessBoard.setPieceAt(new BoardPosition<ChessPiece>(ChessPiece.KING, Color.BLACK), 	1, 1);
 		
-		assertTrue(chessBoard.getPieceAt(1, 1).getPiece() == ChessPiece.KING);
+		assertTrue(chessBoard.getPosition(1, 1).getPiece() == ChessPiece.KING);
 		
 		for (BoardPosition<ChessPiece> bp : chessBoard) {
 			System.out.println(bp);

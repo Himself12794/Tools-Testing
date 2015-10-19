@@ -14,7 +14,7 @@ import java.util.List;
  * @param <T>
  * @param <C>
  */
-public class RangedArrayList<C extends Comparable> extends AbstractRangedList<C> {
+public class RangedArrayList<C extends Comparable<?>> extends AbstractRangedList<C> {
 
 	public RangedArrayList() {
 		super(new ArrayList<C>());

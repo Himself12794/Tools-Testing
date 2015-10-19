@@ -3,6 +3,7 @@ package com.pwhiting.collect;
 import java.util.List;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 public class LimitedArrayList<E> extends AbstractLimitedList<E> {
 	
@@ -24,7 +25,7 @@ public class LimitedArrayList<E> extends AbstractLimitedList<E> {
 	
 	@Override
 	public boolean isLimited() {
-		return filter != DEFAULT_FILTER;
+		return filter != Predicates.alwaysTrue();
 	}
 
 }

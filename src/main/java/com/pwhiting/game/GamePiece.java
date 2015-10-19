@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.pwhiting.game.Gameboard.BoardPosition;
 
-public interface GamePiece<T extends GamePiece<?>> {
+public interface GamePiece<T extends GamePiece<T>> {
 	
 	/**
 	 * Called when a piece is moved to a position. If returned as valid, position automagically 

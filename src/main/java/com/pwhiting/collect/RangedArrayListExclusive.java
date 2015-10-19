@@ -10,7 +10,7 @@ import java.util.Collection;
  *
  * @param <C>
  */
-public class RangedArrayListExclusive<C extends Comparable> extends AbstractRangedList<C> {
+public class RangedArrayListExclusive<C extends Comparable<?>> extends AbstractRangedList<C> {
 	
 	@Override
 	public boolean add(C c) {
