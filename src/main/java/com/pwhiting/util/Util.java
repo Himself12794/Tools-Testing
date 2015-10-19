@@ -292,47 +292,35 @@ public final class Util {
 		return value == null || "".equals(value);
 	}
 	
-	public static Iterable<Integer> asIterable(Range<Integer> range, int step) {
-		return new RangeIterable(range, step);
-	}
-	
-	public static class RangeIterable implements Iterable<Integer> {
+	public static Iterable<Integer> asIterable(final Range<Integer> range, final int step) {
+		return new Iterable<Integer>() {
 		
-		private final Range<Integer> theRange;
-		private final int step;		
-		
-		private RangeIterable(Range range, int step) {
-			theRange = range;
-			this.step = step;
-		}
-
-		@Override
-		public Iterator<Integer> iterator() {
-			return new Itr();
-		}
-		
-		public class Itr implements Iterator<Integer> {
-			
-			private int currValue = theRange.lowerEndpoint();
-			
-			private Itr() {
-				if (theRange.lowerBoundType() == BoundType.OPEN) currValue++;
-			}
-
 			@Override
-			public boolean hasNext() {
-				return theRange.contains(currValue);
-			}
-
-			@Override
-			public Integer next() {
-				int value = currValue;
-				currValue += step;
-				return value;
+			public Iterator<Integer> iterator() {
+				return new Iterator<Integer>() {
+				
+					private int currValue = range.lowerEndpoint();
+					
+					{
+						if (range.lowerBoundType() == BoundType.OPEN) currValue++;
+					}
+		
+					@Override
+					public boolean hasNext() {
+						return range.contains(currValue);
+					}
+		
+					@Override
+					public Integer next() {
+						int value = currValue;
+						currValue += step;
+						return value;
+					}
+				
+				};
 			}
 			
-		}
-		
+		};
 	}
-
 }
+

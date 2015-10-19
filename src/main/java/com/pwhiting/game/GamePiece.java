@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.pwhiting.game.Gameboard.BoardPosition;
 
-public interface GamePiece<T extends GamePiece> {
+public interface GamePiece<T extends GamePiece<?>> {
 	
 	/**
 	 * Called when a piece is moved to a position. If returned as valid, position automagically 
@@ -13,7 +13,7 @@ public interface GamePiece<T extends GamePiece> {
 	 * 
 	 * @param piece
 	 */
-	Gameboard.MoveOutcome onMovePiece(Gameboard<T> board, BoardPosition<T> pieceA, BoardPosition<T> pieceB);
+	Gameboard<T>.MoveOutcome onMovePiece(Gameboard<T> board, BoardPosition<T> pieceA, BoardPosition<T> pieceB);
 
 	boolean isValidMove(Gameboard<T> board, BoardPosition<T> posA, BoardPosition<T> posB);
 	

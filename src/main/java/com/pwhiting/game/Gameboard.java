@@ -88,9 +88,9 @@ public class Gameboard<T extends GamePiece> implements Iterable<Gameboard.BoardP
 	public boolean setPieceAt(BoardPosition<T> piece, int x, int y) {
 		if (inRange(x, y)) {
 			BoardPosition<T> bp = piece == null ? new BoardPosition<T>() : piece;
-			piece.xPos = x;
-			piece.yPos = y;
-			boardLayout[x][y] = piece;
+			bp.xPos = x;
+			bp.yPos = y;
+			boardLayout[x][y] = bp;
 			return true;
 		}
 		return false;
@@ -171,12 +171,12 @@ public class Gameboard<T extends GamePiece> implements Iterable<Gameboard.BoardP
 			isEmpty = false;
 		}
 		
-		public BoardPosition withColor(Color color) {
-			return new BoardPosition(thePiece, color);
+		public BoardPosition<T> withColor(Color color) {
+			return new BoardPosition<T>(thePiece, color);
 		}
 		
-		public BoardPosition withPiece(T piece) {
-			return new BoardPosition(piece, theColor);
+		public BoardPosition<T> withPiece(T piece) {
+			return new BoardPosition<T>(piece, theColor);
 		}
 		
 		/**

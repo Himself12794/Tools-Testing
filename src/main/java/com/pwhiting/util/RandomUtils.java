@@ -39,7 +39,7 @@ public final class RandomUtils {
 		if (rand == null) randToUse = new Random();
 
 		float totalWeight = 0.0F;
-		Map<Range, T> ranges = Maps.newHashMap();
+		Map<Range<Float>, T> ranges = Maps.newHashMap();
 
 		for (T item : items) {
 			
@@ -55,7 +55,7 @@ public final class RandomUtils {
 
 		float choice = randToUse.nextFloat() * totalWeight;
 
-		for (Entry<Range, T> entry : ranges.entrySet()) {
+		for (Entry<Range<Float>, T> entry : ranges.entrySet()) {
 
 			if (entry.getKey().contains(choice)) {
 				return entry.getValue();
