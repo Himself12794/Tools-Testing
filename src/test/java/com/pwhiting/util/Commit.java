@@ -1,13 +1,15 @@
 package com.pwhiting.util;
 
-import com.google.common.collect.Range;
-
-public class Commit implements Comparable<Integer> {
+public class Commit implements Comparable<Commit> {
 
 	private final int value;
 	
 	public Commit(int value) {
 		this.value = value;
+	}
+	
+	public int getValue() {
+		return value;
 	}
 	
 	@Override
@@ -16,8 +18,8 @@ public class Commit implements Comparable<Integer> {
 	}
 
 	@Override
-	public int compareTo(Integer arg0) {
-		return Integer.compare(value, arg0);
+	public int compareTo(Commit arg0) {
+		return arg0 instanceof Commit ? Integer.compare(value, ((Commit)arg0).value) : -1;
 	}
 
 }

@@ -9,7 +9,7 @@ import java.util.ListIterator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
-public abstract class AbstractRangedList<C extends Comparable> implements RangedList<C >{
+public abstract class AbstractRangedList<C extends Comparable<?>> implements RangedList<C >{
 
 
 	protected final List<C> data;
@@ -71,11 +71,6 @@ public abstract class AbstractRangedList<C extends Comparable> implements Ranged
 		for (final C c : data) {
 
 			if (range.contains(c)) {
-
-				if (c instanceof RangedArrayList) {
-					((RangedArrayList) c).limitToRange(range);
-				}
-
 				limitedData.add(c);
 			}
 		}
@@ -137,9 +132,13 @@ public abstract class AbstractRangedList<C extends Comparable> implements Ranged
 
 	@Override
 	public boolean remove(Object o) {
-		boolean v = data.remove(o);
-		reassess();
-		return v;
+		boolean result = false;
+		if (isLimited()){
+			result = limitedData.remove(o);
+		}
+		result |= data.remove(o);
+		
+		return result;
 	}
 
 	@Override
@@ -151,9 +150,7 @@ public abstract class AbstractRangedList<C extends Comparable> implements Ranged
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		boolean v = data.removeAll(c);
-		reassess();
-		return v;
+		return data.removeAll(c) || limitedData.removeAll(c);
 	}
 
 	@Override

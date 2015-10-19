@@ -1,6 +1,7 @@
 package com.pwhiting.collect;
 
 import java.util.Collection;
+
 import com.google.common.collect.Range;
 
 /**
@@ -10,7 +11,7 @@ import com.google.common.collect.Range;
  *
  * @param <C>
  */
-public interface RangedCollection<C extends Comparable> extends Collection<C> {
+public interface RangedCollection<C extends Comparable<?>> extends Collection<C> {
 
 	/**
 	 * The current range used for this collection.

@@ -4,16 +4,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.classic.Level;
-
+import com.google.common.collect.BoundType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
+
+import ch.qos.logback.classic.Level;
 
 /**
  * Utilities for use throughout the rest of the Application
@@ -285,5 +287,40 @@ public final class Util {
 		return split;
 
 	}
-
+	
+	public static boolean nullOrEmpty(String value) {
+		return value == null || "".equals(value);
+	}
+	
+	public static Iterable<Integer> asIterable(final Range<Integer> range, final int step) {
+		return new Iterable<Integer>() {
+		
+			@Override
+			public Iterator<Integer> iterator() {
+				return new Iterator<Integer>() {
+				
+					private int currValue = range.lowerEndpoint();
+					
+					{
+						if (range.lowerBoundType() == BoundType.OPEN) currValue++;
+					}
+		
+					@Override
+					public boolean hasNext() {
+						return range.contains(currValue);
+					}
+		
+					@Override
+					public Integer next() {
+						int value = currValue;
+						currValue += step;
+						return value;
+					}
+				
+				};
+			}
+			
+		};
+	}
 }
+

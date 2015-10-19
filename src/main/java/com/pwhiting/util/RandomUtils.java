@@ -1,6 +1,5 @@
 package com.pwhiting.util;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -30,17 +29,17 @@ public final class RandomUtils {
 	 * @param items
 	 * @return
 	 */
-	public static <T extends IWeightedItem> T selectRandomWeightedItem(Collection<T> items) {
+	public static <T extends IWeightedItem> T selectRandomWeightedItem(Iterable<T> items) {
 		return selectRandomWeightedItem(null, items);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T extends IWeightedItem> T selectRandomWeightedItem(Random rand, Collection<T> items) {
-
-		if (rand == null) rand = new Random();
+	public static <T extends IWeightedItem> T selectRandomWeightedItem(Random rand, Iterable<T> items) {
+		
+		Random randToUse = rand;
+		if (rand == null) randToUse = new Random();
 
 		float totalWeight = 0.0F;
-		Map<Range, T> ranges = Maps.newHashMap();
+		Map<Range<Float>, T> ranges = Maps.newHashMap();
 
 		for (T item : items) {
 			
@@ -54,9 +53,9 @@ public final class RandomUtils {
 			
 		}
 
-		float choice = rand.nextFloat() * totalWeight;
+		float choice = randToUse.nextFloat() * totalWeight;
 
-		for (Entry<Range, T> entry : ranges.entrySet()) {
+		for (Entry<Range<Float>, T> entry : ranges.entrySet()) {
 
 			if (entry.getKey().contains(choice)) {
 				return entry.getValue();

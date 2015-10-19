@@ -2,6 +2,7 @@ package com.pwhiting.util;
 
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,19 +13,24 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.classic.Level;
-
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
+import com.pwhiting.collect.LimitedArrayList;
 import com.pwhiting.collect.RangedArrayList;
 import com.pwhiting.collect.RangedList;
+import com.pwhiting.game.ChessPiece;
+import com.pwhiting.game.Gameboard;
+import com.pwhiting.game.Gameboard.BoardPosition;
 import com.pwhiting.util.RandomUtils.IWeightedItem;
 import com.pwhiting.util.lang.ClocData;
 import com.pwhiting.util.lang.ClocData.Header;
 import com.pwhiting.util.lang.ClocData.LangStats;
 import com.pwhiting.util.lang.ClocService;
 import com.pwhiting.util.lang.CodeSniffer.Language;
+
+import ch.qos.logback.classic.Level;
 
 public class UtilitiesTest {
 	
@@ -123,7 +129,43 @@ public class UtilitiesTest {
 		System.out.println("Took " + iterations + " iterations for " + item + " to be chosen");
 	}
 	
-	private IWeightedItem createWeightedItem(float value, String name) {
+	@Test
+	public void testLimitedList() {
+		
+		Predicate<Integer> filter = new Predicate<Integer>() {
+
+			@Override
+			public boolean apply(Integer input) {
+				return input >= 1 && input <= 5;
+			}
+			
+		};
+		
+		List<Integer> integers = Lists.newArrayList(Util.asIterable(Range.open(0, 15), 3));	
+		List<Integer> commits = new LimitedArrayList<Integer>(integers, filter);
+		
+		for (int commit : commits) {
+			assertTrue(filter.apply(commit));
+		}
+		
+	}
+	
+	@Test
+	public void gameTest() {
+		
+		Gameboard<ChessPiece> chessBoard = new Gameboard<ChessPiece>(8);
+		
+		chessBoard.setPieceAt(new BoardPosition<ChessPiece>(ChessPiece.KING, Color.BLACK), 	1, 1);
+		
+		assertTrue(chessBoard.getPosition(1, 1).getPiece() == ChessPiece.KING);
+		
+		for (BoardPosition<ChessPiece> bp : chessBoard) {
+			System.out.println(bp);
+		}
+		
+	}
+	
+	private IWeightedItem createWeightedItem(final float value, final String name) {
 		return new IWeightedItem() {
 
 			@Override
