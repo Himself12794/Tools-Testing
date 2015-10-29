@@ -1,6 +1,6 @@
 package com.pwhiting.util;
 
-public class Commit implements Comparable {
+public class Commit implements Comparable<Commit> {
 
 	private final int value;
 	
@@ -18,7 +18,7 @@ public class Commit implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
+	public int compareTo(Commit arg0) {
 		return arg0 instanceof Commit ? Integer.compare(value, ((Commit)arg0).value) : -1;
 	}
 

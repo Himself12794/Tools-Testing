@@ -11,11 +11,9 @@ import com.google.common.collect.Lists;
 
 public abstract class AbstractLimitedList<E> implements LimitedList<E>, LimitedCollection<E> {
 	
-	static final Predicate DEFAULT_FILTER = Predicates.alwaysTrue();
-	
 	protected final List<E> data;
 	
-	protected Predicate<? super E> filter = DEFAULT_FILTER;
+	protected Predicate<? super E> filter = Predicates.alwaysTrue();
 	
 	AbstractLimitedList() {
 		this(Lists.<E>newArrayList());
@@ -118,7 +116,7 @@ public abstract class AbstractLimitedList<E> implements LimitedList<E>, LimitedC
 
 	@Override
 	public void removeLimit() {
-		this.filter = DEFAULT_FILTER;
+		this.filter = Predicates.alwaysTrue();
 	}
 
 	@Override

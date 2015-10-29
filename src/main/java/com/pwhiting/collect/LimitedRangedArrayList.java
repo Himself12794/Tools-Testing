@@ -14,7 +14,7 @@ import com.google.common.collect.Range;
  *
  * @param <C>
  */
-public class LimitedRangedArrayList<C extends Comparable> extends AbstractRangedList<C> {
+public class LimitedRangedArrayList<C extends Comparable<?>> extends AbstractRangedList<C> {
 
 	@Override
 	public boolean add(C e) {

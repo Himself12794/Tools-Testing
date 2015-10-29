@@ -157,7 +157,7 @@ public class UtilitiesTest {
 		
 		chessBoard.setPieceAt(new BoardPosition<ChessPiece>(ChessPiece.KING, Color.BLACK), 	1, 1);
 		
-		assertTrue(chessBoard.getPieceAt(1, 1).getPiece() == ChessPiece.KING);
+		assertTrue(chessBoard.getPosition(1, 1).getPiece() == ChessPiece.KING);
 		
 		for (BoardPosition<ChessPiece> bp : chessBoard) {
 			System.out.println(bp);

@@ -9,7 +9,7 @@ import java.util.ListIterator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
-public abstract class AbstractRangedList<C extends Comparable> implements RangedList<C >{
+public abstract class AbstractRangedList<C extends Comparable<?>> implements RangedList<C >{
 
 
 	protected final List<C> data;
@@ -71,11 +71,6 @@ public abstract class AbstractRangedList<C extends Comparable> implements Ranged
 		for (final C c : data) {
 
 			if (range.contains(c)) {
-
-				if (c instanceof RangedArrayList) {
-					((RangedArrayList) c).limitToRange(range);
-				}
-
 				limitedData.add(c);
 			}
 		}

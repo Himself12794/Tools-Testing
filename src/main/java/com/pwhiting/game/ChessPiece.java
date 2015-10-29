@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.pwhiting.game.Gameboard.BoardPosition;
 import com.pwhiting.game.Gameboard.Coordinate;
-import com.pwhiting.game.Gameboard.MoveOutcome;
 
 public enum ChessPiece implements GamePiece<ChessPiece> {
 
@@ -22,7 +21,7 @@ public enum ChessPiece implements GamePiece<ChessPiece> {
 	}
 
 	@Override
-	public MoveOutcome onMovePiece(Gameboard<ChessPiece> board, BoardPosition<ChessPiece> pieceA, BoardPosition<ChessPiece> pieceB) {
+	public Gameboard<ChessPiece>.MoveOutcome onMovePiece(Gameboard<ChessPiece> board, BoardPosition<ChessPiece> pieceA, BoardPosition<ChessPiece> pieceB) {
 		return board.generateInvalidOutcome();
 	}
 	
