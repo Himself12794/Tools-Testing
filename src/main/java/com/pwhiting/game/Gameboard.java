@@ -110,7 +110,7 @@ public class Gameboard<T extends GamePiece<T>> implements Iterable<Gameboard.Boa
 	 * Set the collision as valid.
 	 * Give a null value for both pieces to disappear.
 	 * 
-	 * @param piece the piece to repace
+	 * @param piece the piece to replace
 	 * @return
 	 */
 	public MoveOutcome generateValidOutcome(boolean shouldReplace, BoardPosition<T> resultantPiece) {
