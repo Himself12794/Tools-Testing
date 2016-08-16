@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
 
 /**
@@ -110,7 +112,7 @@ public class Gameboard<T extends GamePiece<T>> implements Iterable<Gameboard.Boa
 	 * Set the collision as valid.
 	 * Give a null value for both pieces to disappear.
 	 * 
-	 * @param piece the piece to repace
+	 * @param piece the piece to replace
 	 * @return
 	 */
 	public MoveOutcome generateValidOutcome(boolean shouldReplace, BoardPosition<T> resultantPiece) {
@@ -185,7 +187,7 @@ public class Gameboard<T extends GamePiece<T>> implements Iterable<Gameboard.Boa
 		 * 
 		 * @return
 		 */
-		public T getPiece() {
+		public @Nullable T getPiece() {
 			return thePiece;
 		}
 		
